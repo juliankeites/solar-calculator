@@ -116,7 +116,7 @@ class UKPowerPricePredictor:
             df.sort_index(inplace=True)
             
             # Resample to hourly (average of two settlement periods)
-            hourly_df = df.resample('H').agg({
+            hourly_df = df.resample('h').agg({
                 'price_gbp_per_mwh': 'mean',
                 'is_forecast': lambda x: x.mode()[0] if len(x.mode()) > 0 else True,
                 'is_actual': lambda x: x.mode()[0] if len(x.mode()) > 0 else False
@@ -149,7 +149,7 @@ class UKPowerPricePredictor:
         timestamps = pd.date_range(
             start=start_time, 
             periods=hours, 
-            freq='H',
+            freq='h',
             tz=self.timezone
         )
         
@@ -379,7 +379,7 @@ class EnhancedSolarEstimator:
         n_points = days * 24
         now = datetime.now()
         start_time = datetime(now.year, now.month, now.day, now.hour)
-        times = pd.date_range(start=start_time, periods=n_points, freq="H")
+        times = pd.date_range(start=start_time, periods=n_points, freq="h")
 
         # Generate day/night cycle based on solar position
         solar_pos = self.calculate_solar_position(times)
@@ -761,7 +761,7 @@ class EnhancedSolarEstimator:
         """Clear-sky theoretical maximum over a horizon, with daily series"""
         now = datetime.now()
         start_time = datetime(now.year, now.month, now.day, 0, 0, 0)
-        times = pd.date_range(start=start_time, periods=days * 24, freq="H")
+        times = pd.date_range(start=start_time, periods=days * 24, freq="h")
 
         # Generate ideal weather data for clearsky
         ideal_weather = {
